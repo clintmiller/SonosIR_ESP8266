@@ -34,6 +34,10 @@ void SonosAPI::mute_zone(String zone) {
   make_request("/" + url_encode(zone) + "/togglemute");
 }
 
+/*
+ * Source: http://www.icosaedro.it/apache/urlencode.c
+ * Via: http://hardwarefun.com/tutorials/url-encoding-in-arduino
+ */
 String SonosAPI::url_encode(String unencoded)
 {
     const char *msg = unencoded.c_str();
