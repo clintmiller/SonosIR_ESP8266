@@ -1,2 +1,5 @@
 .pioenvs
 .piolibdeps
+
+# Secrets in here!
+setup-env.sh

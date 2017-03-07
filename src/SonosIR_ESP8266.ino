@@ -9,13 +9,13 @@
 #include <IRremoteESP8266.h>
 #include <ESP8266WiFi.h>
 #include "sonos_api.h"
- 
-const char* WIFI_SSID     = "YOUR_SSID";
-const char* WIFI_PASSWORD = "YOUR_PASSWORD";
 
-const String SONOS_API_HOST = "YOUR_SONOS_API_HOSTNAME";
+const char* WIFI_SSID     = WIFISSID;
+const char* WIFI_PASSWORD = WIFIPASS;
+
+const String SONOS_API_HOST = SONOSAPIHOST;
 const int    SONOS_API_PORT = 5005;
-const String ZONE_NAME      = "YOUR_SONOS_ZONE_NAME";
+const String ZONE_NAME      = SONOSZONENAME;
 const int    ADJAMT         = 5;
 
 int RECV_PIN = 2; //an IR photo sensor is connected to GPIO pin 2
