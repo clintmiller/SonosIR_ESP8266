@@ -1,4 +1,3 @@
-# Uncomment lines below if you have problems with $PATH
 #SHELL := /bin/bash
 #PATH := /usr/local/bin:$(PATH)
 
@@ -19,3 +18,6 @@ uploadfs:
 
 update:
 	platformio update
+
+secrets:
+	[ ! -f setup-env.sh ] && cp setup-env.sh.tmpl setup-env.sh
