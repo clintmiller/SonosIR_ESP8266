@@ -5,16 +5,16 @@ all:
 	source setup-env.sh && platformio run
 
 upload:
-	platformio --target upload
+	source setup-env.sh && platformio run --target upload
 
 clean:
-	platformio --target clean
+	platformio run --target clean
 
 program:
-	platformio --target program
+	platformio run --target program
 
 uploadfs:
-	platformio --target uploadfs
+	platformio run --target uploadfs
 
 update:
 	platformio update
