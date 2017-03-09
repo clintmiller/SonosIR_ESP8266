@@ -8,18 +8,25 @@
 
 #include <IRremoteESP8266.h>
 #include <ESP8266WiFi.h>
-#include "sonos_api.h"
+#include <ota_updater.h>
+#include <sonos_api.h>
 
 const char* WIFI_SSID     = WIFISSID;
 const char* WIFI_PASSWORD = WIFIPASS;
+
+const String OTA_HOSTNAME = "sonos-ir";
+const String OTA_PASSWORD = OTA_UPDATE_PASSWORD;
+const int    OTA_PORT     = 8266;
 
 const String SONOS_API_HOST = SONOSAPIHOST;
 const int    SONOS_API_PORT = 5005;
 const String ZONE_NAME      = SONOSZONENAME;
 const int    ADJAMT         = 5;
 
-int RECV_PIN = 2; //an IR photo sensor is connected to GPIO pin 2
+//an IR photo sensor is connected to GPIO pin 2
+int RECV_PIN = 2;
 IRrecv irrecv(RECV_PIN);
+OTAUpdater OTA;
 SonosAPI Sonos;
 
 decode_results results;
@@ -44,6 +51,9 @@ void setup()
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
+  // Setup OTA Updates
+  OTA.begin(OTA_HOSTNAME, OTA_PASSWORD, OTA_PORT);
+
   // Setup Sonos
   Sonos.begin(SONOS_API_HOST, SONOS_API_PORT);
 }
@@ -56,6 +66,8 @@ void setup()
  */
 
 void loop() {
+  OTA.handle();
+
   if (irrecv.decode(&results)) {
     if (results.decode_type == JVC) {
       
