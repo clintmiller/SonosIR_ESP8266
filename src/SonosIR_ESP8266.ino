@@ -7,6 +7,7 @@
  */
 
 #include <IRremoteESP8266.h>
+#include <IRrecv.h>
 #include <ESP8266WiFi.h>
 #include <ota_updater.h>
 #include <sonos_api.h>
