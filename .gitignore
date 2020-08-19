@@ -1,5 +1,7 @@
-.pioenvs
-.piolibdeps
-
-# Secrets in here!
+.Python
+.pio
+bin
+lib/python2.7
+include/python2.7
 setup-env.sh
+pip-selfcheck.json
