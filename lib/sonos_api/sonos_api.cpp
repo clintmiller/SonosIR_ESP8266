@@ -5,6 +5,7 @@
 #endif
 
 #include "sonos_api.h"
+#include <ESP8266WiFi.h>
 
 void SonosAPI::begin(String hostname, int port) {
   _hostname = hostname;
@@ -16,7 +17,7 @@ void SonosAPI::begin(String hostname, int port) {
   Serial.println(_port);
 }
 
-void SonosAPI::adjust_zone_volume(String zone, int adjustment_amt) {
+String SonosAPI::adjust_zone_volume(String zone, int adjustment_amt) {
   Serial.print("Adjusting zone: ");
   Serial.println(zone);
 
@@ -24,14 +25,14 @@ void SonosAPI::adjust_zone_volume(String zone, int adjustment_amt) {
   if (adjustment_amt > 0)
     add_pos_sign = "+";
 
-  make_request("/" + url_encode(zone) + "/volume/" + add_pos_sign + adjustment_amt);
+  return make_request("/" + url_encode(zone) + "/volume/" + add_pos_sign + adjustment_amt);
 }
 
-void SonosAPI::mute_zone(String zone) {
+String SonosAPI::mute_zone(String zone) {
   Serial.print("Toggling mute in zone: ");
   Serial.println(zone);
 
-  make_request("/" + url_encode(zone) + "/togglemute");
+  return make_request("/" + url_encode(zone) + "/togglemute");
 }
 
 /*
@@ -63,9 +64,11 @@ String SonosAPI::make_request(String path) {
   // We don't care about the response
   String response;
   
+  _client.stop();
+  
   if (!_client.connect(_hostname.c_str(), _port)) {
     Serial.println("connection failed");
-    return "connection failed!";
+    return "connection failed";
   }
 
   Serial.print("Requesting URL: ");

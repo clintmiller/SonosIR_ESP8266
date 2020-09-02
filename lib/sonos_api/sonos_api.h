@@ -11,8 +11,8 @@ class SonosAPI {
   public:
     SonosAPI() : _client() { };
     void begin(String hostname, int port);
-    void adjust_zone_volume(String zone, int adjustment_amt); 
-    void mute_zone(String zone);
+    String adjust_zone_volume(String zone, int adjustment_amt); 
+    String mute_zone(String zone);
   private:
     String make_request(String path);
     String url_encode(String unencoded);

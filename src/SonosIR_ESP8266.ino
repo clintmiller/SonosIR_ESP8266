@@ -72,20 +72,27 @@ void loop() {
   if (irrecv.decode(&results)) {
     if (results.decode_type == JVC) {
       
+      String res;
       // Figure out what to do based on the remote code
       if (results.value == 0xC578) {
         Serial.println("!!volume up");
-        Sonos.adjust_zone_volume(ZONE_NAME, ADJAMT);
+        res = Sonos.adjust_zone_volume(ZONE_NAME, ADJAMT);
       } else if (results.value == 0xC5F8) {
         Serial.println("!!volume down");
-        Sonos.adjust_zone_volume(ZONE_NAME, -ADJAMT);
+        res = Sonos.adjust_zone_volume(ZONE_NAME, -ADJAMT);
       } else if (results.value == 0xC538) {
         Serial.println("!!toggle mute");
-        Sonos.mute_zone(ZONE_NAME);
+        res = Sonos.mute_zone(ZONE_NAME);
+      }
+
+      if (res == "connection failed") {
+        delay(5000);
+        return;
       }
     } else {
       // Serial.println("Not implemented");
     }
+
     
     irrecv.resume(); // Receive the next value
   }
