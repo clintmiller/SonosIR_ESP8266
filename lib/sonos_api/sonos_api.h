@@ -1,5 +1,6 @@
 #include "WString.h"
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 
 /*
  * This "client" of the non-existent Sonos API actually hits a running instance of
@@ -9,7 +10,7 @@
 
 class SonosAPI {
   public:
-    SonosAPI() : _client() { };
+    SonosAPI() { };
     void begin(String hostname, int port);
     String adjust_zone_volume(String zone, int adjustment_amt); 
     String mute_zone(String zone);
@@ -18,5 +19,4 @@ class SonosAPI {
     String url_encode(String unencoded);
     String _hostname;
     int _port;
-    WiFiClient _client;
 };

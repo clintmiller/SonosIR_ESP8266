@@ -5,7 +5,6 @@
 #endif
 
 #include "sonos_api.h"
-#include <ESP8266WiFi.h>
 
 void SonosAPI::begin(String hostname, int port) {
   _hostname = hostname;
@@ -61,22 +60,36 @@ String SonosAPI::url_encode(String unencoded)
 }
 
 String SonosAPI::make_request(String path) {
-  // We don't care about the response
   String response;
-  
-  _client.stop();
-  
-  if (!_client.connect(_hostname.c_str(), _port)) {
-    Serial.println("connection failed");
-    return "connection failed";
+  WiFiClient client;
+  HTTPClient http;
+
+  String http_uri = F("http://");
+  http_uri += _hostname;
+  http_uri += F(":");
+  http_uri += _port;
+  http_uri += path;
+
+  Serial.print(F("GET "));
+  Serial.println(http_uri);
+  if (http.begin(client, http_uri)) {
+    int httpCode = http.GET();
+    if (httpCode > 0) {
+      Serial.printf_P(PSTR("[HTTP] GET response code: %d\n"), httpCode);
+      if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
+        String payload = http.getString();
+        Serial.println(payload);
+        return payload;
+      }
+    } else {
+      Serial.printf_P(PSTR("[HTTP] GET failed, error: %s\n"), http.errorToString(httpCode).c_str());
+      return F("[HTTP] GET failed");
+    }
+  } else {
+    Serial.println(F("[HTTP] Unable to connect!"));
+    return F("[HTTP] Unable to connect!");
   }
 
-  Serial.print("Requesting URL: ");
-  Serial.println(path);
-
-  _client.print(String("GET ") + path + " HTTP/1.1\r\n" +
-               "Host: " + _hostname + "\r\n\r\n");
-
-  return response;
+  return F("NOT GONNA GET HERE!");
 }
 
